@@ -60,18 +60,18 @@ def Unet():
 
   ann5 = Dense(7*7*256)(encoded)
   ann6 = Reshape((7,7,256))(ann5)
-  ann6 = concatenate([ann6, Econv3], axis=3) #Skyp connection
+  ann6 = concatenate([ann6, Econv3], axis=3) #Skip connection
   ann6 = BatchNormalization(momentum = 0.5)(ann6)
   ann6 = LeakyReLU()(ann6)
 
   Dconv1 = Conv2DTranspose(128,(5, 5),strides=(1, 1),padding='same',use_bias=False,kernel_regularizer='l1')(ann6)
-  Dconv1 = concatenate([Dconv1, Econv2], axis=3) #Skyp connection
+  Dconv1 = concatenate([Dconv1, Econv2], axis=3) #Skip connection
   Dconv1 = BatchNormalization(momentum = 0.5)(Dconv1)
   Dconv1 = LeakyReLU()(Dconv1)
 
 
   Dconv2 = Conv2DTranspose(64,(5, 5),strides=(2, 2),padding='same',use_bias=False,kernel_regularizer='l1')(Dconv1)
-  Dconv2 = concatenate([Dconv2, Econv1]) #Skyp connection
+  Dconv2 = concatenate([Dconv2, Econv1]) #Skip connection
   Dconv2 = BatchNormalization(momentum = 0.5)(Dconv2)
   Dconv2 = LeakyReLU()(Dconv2)
 
